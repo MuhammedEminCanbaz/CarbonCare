@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 import schemas, crud
 from database import get_db
@@ -7,6 +7,7 @@ router = APIRouter(prefix="/footprint")
 
 @router.post("/calculate")
 def calculate_footprint(request: schemas.FootprintCalculationRequest, db: Session = Depends(get_db)):
+    # Emisyon hesaplamaları
     emisyon = 0
     emisyon += request.arac_km * 0.192
     emisyon += request.toplu_km * 0.06
