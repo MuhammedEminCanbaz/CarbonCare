@@ -8,7 +8,7 @@
 </head>
 <body>
 
-  <!-- Navbar -->
+  
   <nav class="navbar">
     <div class="navbar-logo">
       <span class="black">Carbon</span><span class="green">Care</span>
@@ -20,7 +20,7 @@
     </ul>
   </nav>
 
-  <!-- Form Başlığı -->
+
   
   <section class="form-section" id="hesaplama">
         <h2>Karbon Ayak İzi Anketi</h2>
@@ -103,7 +103,7 @@
         </div>
       </section>
       
-      <!-- Chart.js CDN (grafik kütüphanesi) -->
+
       <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
       <script>
         fetch("http://localhost:8000/api/gecmis-veri")
@@ -195,7 +195,7 @@
     const elektrik = document.getElementById("elektrik").value;
     const alisveris = document.getElementById("alisveris").value;
 
-    // 1. Boş alan kontrolü
+   
     if (
       !arac_km || !toplu_km || !ucak_km ||
       !et || !elektrik || !alisveris
@@ -204,7 +204,7 @@
       return;
     }
 
-    // 2. Ondalıklı sayı kontrolü
+
     if (
       !arac_km.includes(".") ||
       !toplu_km.includes(".") ||
@@ -214,7 +214,7 @@
       return;
     }
 
-    // Başarılıysa sonucu yeni sayfada aç
+    
     const params = new URLSearchParams({
       arac_km,
       toplu_km,
@@ -229,7 +229,7 @@
 </script>
 <script>
     function cikisYap() {
-      // Gerekirse burada oturum temizleme işlemi yapılabilir
+      
       window.location.href = "index.html";
     }
   </script>
