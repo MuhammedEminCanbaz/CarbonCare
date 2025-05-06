@@ -1,4 +1,4 @@
-/* Arka plan ve temel yapı */
+
 body {
     margin: 0;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -9,7 +9,7 @@ body {
     min-height: 100vh;
   }
   
-  /* Navbar */
+
   .navbar {
     display: flex;
     justify-content: space-between;
@@ -79,7 +79,7 @@ body {
     color: #444;
   }
   
-  /* Giriş ve seçim kutuları eşit boyutta */
+
   .carbon-form input,
   .carbon-form select {
     display: block;
@@ -169,32 +169,32 @@ body {
     font-size: 0.95rem;
     line-height: 1.4;
   }
-  /* Giriş kutuları ve seçim kutuları */
+ 
 input[type="number"],
 select {
   width: 100%;
   padding: 10px;
   margin-top: 5px;
-  border: 2px solid #cfd8dc; /* açık gri-mavi sınır */
+  border: 2px solid #cfd8dc; 
   border-radius: 8px;
-  background-color: #f4f6f7; /* çok açık gri */
+  background-color: #f4f6f7; 
   color: #333;
   font-size: 1rem;
   transition: border-color 0.3s, background-color 0.3s;
 }
 
-/* Odaklandığında (kutuya tıklanınca) */
+
 input[type="number"]:focus,
 select:focus {
-  border-color: #4caf50; /* yumuşak yeşil */
-  background-color: #e8f5e9; /* açık yeşilimsi zemin */
+  border-color: #4caf50;
+  background-color: #e8f5e9; 
   outline: none;
 }
 
-/* Label'lar */
+
 label {
   font-weight: 500;
-  color: #2e7d32; /* koyu yeşil */
+  color: #2e7d32;
 }
 html {
   scroll-behavior: smooth;
