@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kullanıcı Paneli</title>
+  <link rel="stylesheet" href="dashboard.css" />
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="navbar-logo">
+      <span class="black">Carbon</span><span class="green">Care</span>
+    </div>
+    <ul class="navbar-menu">
+      <li><a href="#genel-bilgi">Genel Bilgi</a></li>
+      <li><a href="#hesaplama">Karbon Hesaplama</a></li>
+      <li><a href="#" onclick="cikisYap()">Çıkış</a></li>
+    </ul>
+  </nav>
+
+  <!-- Form Başlığı -->
+  
+  <section class="form-section" id="hesaplama">
+        <h2>Karbon Ayak İzi Anketi</h2>
+        <form class="carbon-form" action="sonuc.php" method="POST" target="_blank">
+            <div class="form-group">
+              <label for="arac_km">1. Haftalık özel araçla kaç km yol yaparsınız?</label>
+              <input type="number" id="arac_km" name="arac_km" min="0" step="0.01" required 
+                     oninput="validateFloatInput(this)" />
+            </div>
+            <div class="form-group">
+                <label for="toplu_km">2. Haftalık toplu taşıma ile kaç km yol yaparsınız?</label>
+                <input type="number" id="toplu_km" name="toplu_km" min="0" step="0.01" required 
+                       oninput="validateFloatInput(this)" />
+            </div>
+      
+          <div class="form-group">
+            <label for="et">3. Kırmızı et tüketiyor musunuz?</label>
+            <select id="et" name="et" required>
+              <option value="">Seçiniz</option>
+              <option value="true">Evet</option>
+              <option value="false">Hayır</option>
+            </select>
+          </div>
+      
+          <div class="form-group">
+            <label for="elektrik">4. Elektrik enerjisi üretiminde fosil yakıt kullanıyor musunuz?</label>
+            <select id="elektrik" name="elektrik" required>
+              <option value="">Seçiniz</option>
+              <option value="true">Evet</option>
+              <option value="false">Hayır</option>
+            </select>
+          </div>
+
+
+          <div class="form-group">
+            <label for="ucak_km">5. Yılda kaç km uçak yolculuğu yaparsınız?</label>
+            <input type="number" id="ucak_km" name="ucak_km" min="0" step="0.01" required 
+                   oninput="validateFloatInput(this)" />
+          </div>
+      
+          <div class="form-group">
+            <label for="alisveris">6. Düzenli olarak ihtiyaç dışı alışveriş yapıyor musunuz?</label>
+            <select id="alisveris" name="alisveris" required>
+              <option value="">Seçiniz</option>
+              <option value="true">Evet</option>
+              <option value="false">Hayır</option>
+            </select>
+          </div>
+      
+          <button type="button" class="submit-button" onclick="handleFormSubmit()">Gönder</button>
+        </form>
+        
+      </section>
+      <section class="chart-section" id="genel-bilgi">
+        <h2>Geçmiş Karbon Ayak İzi Verileri</h2>
+        <div class="chart-container">
+          <canvas id="carbonChart"></canvas>
+        </div>
+      </section>
+      <section class="info-cards">
+        <div class="card">
+          <h3>Toplam Karbon Ayak İzin</h3>
+          <p>Ortalama bir insanın yıllık karbon ayak izi 4 ton civarındadır. Bu, yaklaşık <strong>20 ağacın</strong> temizleyebileceği karbon kadar!</p>
+        </div>
+        <div class="card">
+          <h3>Ulaşım Alışkanlıkların</h3>
+          <p>Haftada 100 km araba kullanmak yılda yaklaşık <strong>0.6 ton CO₂</strong> salımı yapar. Toplu taşıma bu değeri <strong>4 kat azaltır</strong>.</p>
+        </div>
+        <div class="card">
+          <h3>Enerji Tüketimin</h3>
+          <p>Günde 5 kWh elektrik harcamak yılda yaklaşık <strong>900 kg CO₂</strong> üretir. Güneş enerjisi ile bu değer <strong>sıfıra düşebilir</strong>.</p>
+        </div>
+        <div class="card">
+          <h3>Beslenme Tercihlerin</h3>
+          <p>1 kg kırmızı et, yaklaşık <strong>27 kg CO₂</strong> salımı yapar. Haftada 1 etsiz gün, büyük fark yaratır!</p>
+        </div>
+        <div class="card">
+          <h3>Tüketim Davranışların</h3>
+          <p>Her yeni tişört üretimi için <strong>2.700 litre su</strong> harcanır. İkinci el ve geri dönüşüm doğa için kazançtır.</p>
+        </div>
+      </section>
+      
+      <!-- Chart.js CDN (grafik kütüphanesi) -->
+      <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+      <script>
+        fetch("http://localhost:8000/footprint/history/graph/1")
+          .then(res => res.json())
+          .then(data => {
+            const ctx = document.getElementById('carbonChart').getContext('2d');
+            new Chart(ctx, {
+              type: 'line',
+              data: {
+                labels: data.labels,
+                datasets: [{
+                  label: 'Karbon Ayak İzi (kg CO₂)',
+                  data: data.values,
+                  backgroundColor: 'rgba(76, 175, 80, 0.2)',
+                  borderColor: '#4CAF50',
+                  borderWidth: 2,
+                  fill: true,
+                  tension: 0.3,
+                  pointBackgroundColor: '#4CAF50'
+                }]
+              },
+              options: {
+                responsive: true,
+                plugins: {
+                  legend: {
+                    position: 'top',
+                    labels: {
+                      color: '#333'
+                    }
+                  }
+                },
+                scales: {
+                  x: {
+                    ticks: {
+                      color: '#555'
+                    },
+                    grid: {
+                      color: '#eee'
+                    }
+                  },
+                  y: {
+                    beginAtZero: true,
+                    ticks: {
+                      color: '#555'
+                    },
+                    grid: {
+                      color: '#eee'
+                    }
+                  }
+                }
+              }
+            });
+          });
+      </script>
+      
+      <script>
+            function validateFloatInput(el) {
+              const value = el.value;
+              if (value && Number.isInteger(parseFloat(value))) {
+                el.setCustomValidity("Lütfen ondalıklı (virgüllü) bir değer giriniz.");
+              } else {
+                el.setCustomValidity("");
+              }
+            }
+      </script>
+      <script>
+        async function handleFormSubmit() {
+          const form = document.getElementById("carbonForm");
+          const arac_km = parseFloat(document.getElementById("arac_km").value);
+          const toplu_km = parseFloat(document.getElementById("toplu_km").value);
+          const ucak_km = parseFloat(document.getElementById("ucak_km").value);
+          const et = document.getElementById("et").value === "true";
+          const elektrik = document.getElementById("elektrik").value === "true";
+          const alisveris = document.getElementById("alisveris").value === "true";
+        
+          const payload = {
+            arac_km, toplu_km, ucak_km, et, elektrik, alisveris,
+            date: new Date().toISOString(),
+            user_id: 1 // test için sabit, sonra login sisteminden alınabilir
+          };
+        
+          const response = await fetch("http://localhost:8000/footprint/calculate", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+          });
+        
+          const data = await response.json();
+          const params = new URLSearchParams({
+            carbon_score: data.carbon_score,
+            comment: data.comment
+          });
+        
+          window.open("sonuc.html?" + params.toString(), "_blank");
+        }
+        </script>
+<script>
+    function cikisYap() {
+      // Gerekirse burada oturum temizleme işlemi yapılabilir
+      window.location.href = "index.html";
+    }
+  </script>
+
+
+</body>
+</html>
